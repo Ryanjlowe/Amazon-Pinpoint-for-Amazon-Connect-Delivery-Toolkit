@@ -6,18 +6,23 @@ This repository serves as a guide for system integrators who have experience wor
 
 * [What is Amazon Pinpoint](#What-is-Amazon-Pinpoint)
 * [Use-Case: Call Deflection](#Use-Case-Call-Deflection)
+  * [Solution: Amazon Pinpoint SMS Chat Bot](#solution-amazon-pinpoint-sms-chat-bot)
+  * [Solution: Amazon Pinpoint SMS Connect Chat Connector](#solution-amazon-pinpoint-sms-connect-chat-connector)
 * [Use-Case: Send Campaign Notifications](#Use-Case-Send-Campaign-Notifications)
+  * [Solution: Amazon Pinpoint custom channel for Amazon Connect](#Solution-Amazon-Pinpoint-custom-channel-for-Amazon-Connect)
 * [Use-Case: Transactional Outbound Communications - Email, SMS, etc](#Use-Case-Transactional-Outbound-Communications---Email-SMS-etc)
+  * [Solution: Using Amazon Pinpoint to send text messages in Amazon Connect](#Solution-Using-Amazon-Pinpoint-to-send-text-messages-in-Amazon-Connect)
 * [Use-Case: Omni-Channel Customer Segmentation / Insights](#Use-Case-Omni-Channel-Customer-Segmentation--Insights)
 * [Use-Case: Augment Customer Profiles with Marketing Data](#Use-Case-Augment-Customer-Profiles-with-Marketing-Data)
 * [Use-Case: Agent Chat over SMS](#Use-Case-Agent-Chat-over-SMS)
+  * [Solution: Amazon Pinpoint Two-Way SMS Connect Chat Connector](#solution-amazon-pinpoint-two-way-sms-connect-chat-connector)
 * [Use-Case: Assign Agent Tasks using Amazon Pinpoint Journeys](#Use-Case-Assign-Agent-Tasks-using-Amazon-Pinpoint-Journeys)
-* [Other Amazon Pinpoint Resources](#Other-Amazon-Pinpoint-Resources])
+* [Other Amazon Pinpoint Resources](#Other-Amazon-Pinpoint-Resources)
 
 ## What is Amazon Pinpoint
 Amazon Pinpoint is a multi-channel digital engagement service. It is a part of the Customer Engagement suite of services, enabling customers to send both promotional and transactional messages across email, SMS, push notification, voice, and custom channels.  For more details, and a quick guide to Pinpoint terms, see [Amazon Pinpoint Key Concepts](pinpoint_detail/README.md).
 
-See the [Other Amazon Pinpoint Resources](#Other-Amazon-Pinpoint-Resources]) below for official documentation, reference architectures with full CloudFormation source code, fully-vetted AWS Solutions, and recorded webinars and other videos.
+See the [Other Amazon Pinpoint Resources](#Other-Amazon-Pinpoint-Resources) below for official documentation, reference architectures with full CloudFormation source code, fully-vetted AWS Solutions, and recorded webinars and other videos.
 
 ## Use-Case: Call Deflection
 
@@ -48,24 +53,49 @@ Amazon Connect's chat experience can be extended to enable using Amazon Pinpoint
 
 The [Amazon Pinpoint SMS Connect Chat Connector](https://github.com/Ryanjlowe/amazon-pinpoint-sms-connect-chat) is a POC showcasing these capabilities.  Customers can follow the pattern and implement their own SMS to chat flows very quickly.
 
-<img src="images/chat_arch.png" height="400" />
+<img src="images/chat_arch.png" height="300" />
 
 
 ## Use-Case: Send Campaign Notifications
 
 Amazon Pinpoint has three channels available natively out of the box that work with campaigns and journeys: Email, SMS, and Push for Mobile Devices.  Additionally, customers can create their own [custom channels](https://docs.aws.amazon.com/pinpoint/latest/developerguide/channels-custom.html) allowing marketers to send messages across any "channel" using any service that can be reached by an AWS Lambda function.  
 
+### Solution: Amazon Pinpoint custom channel for Amazon Connect
+
 The Amazon Pinpoint team has [created and open-sourced an Amazon Connect custom channel](https://github.com/aws-samples/amazon-pinpoint-connect-channel).  This channel can be dropped into a campaign or journey to trigger and outbound call via Amazon Connect. As this [blog points out, this can be used to send voice appointment reminders](#https://aws.amazon.com/blogs/messaging-and-targeting/send-voice-appointment-reminders-using-amazon-pinpoint-custom-channels-and-amazon-connect/) allowing an interactive experience where end-customers could press a button to speak to an agent if needed.  Marketers can use Amazon Pinpoint's segmentation and targeting capabilities to target end-customers to receive an outbound call just like they would for email or SMS as a channel.
 
-<img src="images/Connectoutbound_architecture.png" height="400" />
+<img src="images/Connectoutbound_architecture.png" height="300" />
 
 ## Use-Case: Transactional Outbound Communications - Email, SMS, etc
+
+At its core, Amazon Pinpoint is a message delivery service.  ISVs can use Amazon Pinpoint to deliver messages to end-users across email, SMS, push, and voice channels. Amazon Pinpoint uses Amazon Simple Email Service to deliver email messages.  Amazon Pinpoint can send SMS messages in [over 200 countries and regions](https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-countries.html). Amazon Pinpoint supports push messages using Firebase Cloud Messaging, Apple Push Notification service, Baidu Cloud Push, and Amazon Device Message.
+
+Using Amazon Connect's ability to [invoke an AWS Lambda function in a contact flow](https://docs.aws.amazon.com/connect/latest/adminguide/connect-lambda-functions.html), customers can make use of Amazon Pinpoint's [Send Messages API](https://docs.aws.amazon.com/goto/WebAPI/pinpoint-2016-12-01/SendMessages) to deliver messages over SMS (or email, push, or other channel).
+
+### Solution: [Using Amazon Pinpoint to send text messages in Amazon Connect](https://aws.amazon.com/blogs/contact-center/using-amazon-pinpoint-to-send-text-messages-in-amazon-connect/)
+
+Calling Amazon Pinpoint's transactional API can be used for many different use-cases.  An SMS message confirmation message could be sent during a call-back scenario.  The recipient's phone number could be verified by sending a one time password.  Or the agent could trigger an SMS or email message that has details of the conversation, such as references and links.  This [blog post solution](https://aws.amazon.com/blogs/contact-center/using-amazon-pinpoint-to-send-text-messages-in-amazon-connect/) outlines the very simple steps needed to connect Amazon Pinpoint in a contact flow.
+
+<img src="images/outbound_sms.png" />
+
 
 ## Use-Case: Omni-Channel Customer Segmentation / Insights
 
 ## Use-Case: Augment Customer Profiles with Marketing Data
 
 ## Use-Case: Agent Chat over SMS
+
+This repository already discuses how connecting Amazon Pinpoint's two-way SMS to Amazon Connect's chat can be used for [call deflection](#Use-Case-Call-Deflection), but this technique can be used on its own as well.  Offering end-customers the ability to get customer service by calling the call center, chatting via the website, or chatting over SMS provides customers many different channels of support without introducing more places that an agent has to log into.
+
+### Solution: [Amazon Pinpoint Two-Way SMS Connect Chat Connector](https://github.com/Ryanjlowe/amazon-pinpoint-sms-connect-chat)
+
+Amazon Connect's chat experience can be extended to enable using Amazon Pinpoint's two-way SMS as a delivery mechanism.  In this way, call center agents are able to field questions from the website's chat interface and chat messages sent via SMS.  Further, this mechanism could be deployed initiated directly from an inbound call flow allowing the call to be deflected to an agent that can handle multiple chat sessions simultaneously.
+
+<img src="images/chat_screenshot.png" height="400" />
+
+The [Amazon Pinpoint SMS Connect Chat Connector](https://github.com/Ryanjlowe/amazon-pinpoint-sms-connect-chat) is a POC showcasing these capabilities.  Customers can follow the pattern and implement their own SMS to chat flows very quickly.
+
+<img src="images/chat_arch.png" height="300" />
 
 ## Use-Case: Assign Agent Tasks using Amazon Pinpoint Journeys
 
