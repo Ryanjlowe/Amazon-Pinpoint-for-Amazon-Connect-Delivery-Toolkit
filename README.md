@@ -14,9 +14,9 @@ This repository serves as a guide for system integrators who have experience wor
   * [Solution: Using Amazon Pinpoint to send text messages in Amazon Connect](#Solution-Using-Amazon-Pinpoint-to-send-text-messages-in-Amazon-Connect)
 * [Use-Case: Omni-Channel Customer Segmentation / Insights](#Use-Case-Omni-Channel-Customer-Segmentation--Insights)
 * [Use-Case: Augment Customer Profiles with Marketing Data](#Use-Case-Augment-Customer-Profiles-with-Marketing-Data)
+  * [Solution: Amazon Pinpoint Connect Profiles Customer Channel](#Solution-Amazon-Pinpoint-Connect-Profiles-Customer-Channel)
 * [Use-Case: Agent Chat over SMS](#Use-Case-Agent-Chat-over-SMS)
   * [Solution: Amazon Pinpoint Two-Way SMS Connect Chat Connector](#solution-amazon-pinpoint-two-way-sms-connect-chat-connector)
-* [Use-Case: Assign Agent Tasks using Amazon Pinpoint Journeys](#Use-Case-Assign-Agent-Tasks-using-Amazon-Pinpoint-Journeys)
 * [Other Amazon Pinpoint Resources](#Other-Amazon-Pinpoint-Resources)
 
 ## What is Amazon Pinpoint
@@ -33,7 +33,7 @@ Using Amazon Pinpoint for SMS introduces a few different ways that we can offer 
 
 ### Solution: [Amazon Pinpoint SMS Chat Bot](https://aws.amazon.com/blogs/messaging-and-targeting/create-an-sms-chatbox-with-amazon-pinpoint-and-lex/)
 
-[Amazon Lex](https://aws.amazon.com/lex/) is an AI service for building conversation interfaces into any application using voice or text. Amazon Lex has already demonstrated its ability to perform standard tasks like Appointment reminders, confirmations, and automatic rescheduling.
+[Amazon Lex](https://aws.amazon.com/lex/) is an AI service for building conversation interfaces into any application using voice or text. Amazon Lex has already demonstrated its ability to perform standard tasks like Appointment reminders, confirmations, and automatic rescheduling.  Call centers that integrate Amazon Lex into their call flows to help automate calls have shown to have direct cost savings.
 
 [Amazon Lex can be integrated into Amazon Pinpoint to create a two-way SMS chat bot](https://aws.amazon.com/blogs/messaging-and-targeting/create-an-sms-chatbox-with-amazon-pinpoint-and-lex/) that can be used to deliver Amazon Lex's capabilities over the SMS channel.
 
@@ -81,7 +81,22 @@ Calling Amazon Pinpoint's transactional API can be used for many different use-c
 
 ## Use-Case: Omni-Channel Customer Segmentation / Insights
 
+COMING SOON
+
 ## Use-Case: Augment Customer Profiles with Marketing Data
+
+[Amazon Connect's Customer Profiles](https://aws.amazon.com/connect/customer-profiles/) allow customers to deliver more personalized customer experiences with less effort through a unified view of all customer data presented to the agent at the moment of contact.
+
+The [Customer Profile APIs](https://docs.aws.amazon.com/customerprofiles/latest/APIReference/Welcome.html) allow for custom integrations to be built so that any application can write data and update profile data.  Data from Amazon Pinpoint could enrich the customer profile in many different ways.  This includes watching for email hard bounces to note that the customer's email address is invalid.  Customer Profiles could be updated to show how engaged a customer is with the various communications. Or it could track what offers, journey paths, or other treatments customers receive during marketing campaigns to ensure future communications are consistent.
+
+### Solution: [Amazon Pinpoint Connect Profiles Customer Channel](https://github.com/Ryanjlowe/amazon-pinpoint-connect-profiles-channel)
+
+This solution deploys a custom channel that is configured to update Profile attributes.  In the deployed example, a marketer could place the custom channel after a Yes/No split checking if an email was opened.  The example is an email is sent that offers a 30% off discount to renew a subscription.  After a given time window, it is written back to the end customer's Profile the offer they were assigned and whether it was opened or not.  This could be used by an agent during a renewal or churn scenario to ensure the end customer knows the offer is available in case they didn't open the email.
+
+This is just one example, and custom channels could be built for a variety of scenarios where Profile attributes can be updated.
+
+<img src="images/profile_journey.png" height="400" />
+
 
 ## Use-Case: Agent Chat over SMS
 
@@ -96,8 +111,6 @@ Amazon Connect's chat experience can be extended to enable using Amazon Pinpoint
 The [Amazon Pinpoint SMS Connect Chat Connector](https://github.com/Ryanjlowe/amazon-pinpoint-sms-connect-chat) is a POC showcasing these capabilities.  Customers can follow the pattern and implement their own SMS to chat flows very quickly.
 
 <img src="images/chat_arch.png" height="300" />
-
-## Use-Case: Assign Agent Tasks using Amazon Pinpoint Journeys
 
 
 ## Other Amazon Pinpoint Resources
